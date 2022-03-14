@@ -1,13 +1,16 @@
 image: node:16
 
 definitions: 
+  caches:
+    haxe: ~/haxe
+
   steps:
     - step: &build-test
         runs-on: 
           - self.hosted
         name: Test
-        # caches:
-        #   - node_modules
+        caches:
+          - haxe
         script:
           - yarn global add lix
           - lix download
@@ -23,6 +26,8 @@ pipelines:
           runs-on: 
             - self.hosted
           name: Build and Deploy Playground
+          caches:
+            - haxe
           script:
             - yarn global add lix
             - lix download
