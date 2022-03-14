@@ -1,0 +1,14 @@
+image: node:16
+
+pipelines:
+  default:
+    - step:
+        runs-on: 
+          - self.hosted
+        name: Test
+        # caches:
+        #   - node_modules
+        script:
+          - yarn global add lix
+          - lix download
+          - lix run travix node

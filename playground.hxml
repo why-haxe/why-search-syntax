@@ -1,0 +1,9 @@
+-cp tests
+-main Playground
+-js bin/index.js
+-dce full
+
+-lib search-syntax
+
+-D analyzer-optimize
+-D no-deprecation-warnings
