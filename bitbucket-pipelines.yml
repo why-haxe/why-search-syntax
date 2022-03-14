@@ -30,6 +30,7 @@ pipelines:
             - git clone git@bitbucket.org:vantagefxcrm/vantagefxcrm.bitbucket.io.git
             - cd vantagefxcrm.bitbucket.io
             - ls -lah
+            - mkdir -p $BITBUCKET_REPO_SLUG
             - cp ../bin/index.* $BITBUCKET_REPO_SLUG/
             - git add -A
             - git commit -m "Update search-syntax"
