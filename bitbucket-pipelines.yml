@@ -37,6 +37,12 @@ pipelines:
             - ls -lah
             - mkdir -p $BITBUCKET_REPO_SLUG
             - cp ../bin/index.* $BITBUCKET_REPO_SLUG/
+            
+            # Ideally the following git config should point to the one who triggered this pipeline
+            # see https://jira.atlassian.com/browse/BCLOUD-16711?focusedCommentId=2327119&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-2327119
+            - git config --global user.email "kevin.leung@vantagemarkets.com"
+            - git config --global user.name "Kevin Leung"
+            
             - git add -A
             - git commit -m "Update search-syntax"
             - git push origin master
