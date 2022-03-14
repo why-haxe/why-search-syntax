@@ -1,8 +1,8 @@
 image: node:16
 
-pipelines:
-  default:
-    - step:
+definitions: 
+  steps:
+    - step: &build-test
         runs-on: 
           - self.hosted
         name: Test
@@ -12,3 +12,25 @@ pipelines:
           - yarn global add lix
           - lix download
           - lix run travix node
+
+pipelines:
+  default:
+    - step: *build-test
+  branches:
+    master:
+      - step: *build-test
+      - step:
+          runs-on: 
+            - self.hosted
+          name: Build and Deploy Playground
+          script:
+            - yarn global add lix
+            - lix download
+            - haxe playground.hxml
+            - git clone git@bitbucket.org:vantagefxcrm/vantagefxcrm.bitbucket.io.git
+            - cd vantagefxcrm.bitbucket.io
+            - ls -lah
+            - cp ../bin/index.* $BITBUCKET_REPO_SLUG/
+            - git add -A
+            - git commit -m "Update search-syntax"
+            - git push origin master
