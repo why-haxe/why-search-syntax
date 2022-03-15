@@ -11,7 +11,7 @@ date:<2022-02-22T00:00:00Z
 **Range (inclusive)**  
 date:2022-02-22..2022-03-11  
 
-> Note: Date without time is equivalent to 00:00:00 at client timezone
+> Note: Date without time is equivalent to 00:00:00 at client timezone  
 > Implementation Note: client needs to pass to server its local timezone value
 
 # Text
