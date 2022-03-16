@@ -46,11 +46,25 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 	static final LITERAL = !LITERAL_ESCAPABLE;
 	
 	
-	public static function parse(source, ?pos):Array<Term> {
-		return tryParse(source, pos).sure();
+	public static function parse(source, ?pos) {
+		final result = doParse(source, pos).sure();
+		#if interop
+		return interop.Converter.nativize(result);
+		#else
+		return result;
+		#end
 	}
 	
-	public static function tryParse(source, ?pos):Outcome<Array<Term>, Error> {
+	public static function tryParse(source, ?pos) {
+		final result = doParse(source, pos);
+		#if interop
+		return interop.Converter.nativize(result);
+		#else
+		return result;
+		#end
+	}
+	
+	static function doParse(source, ?pos):Outcome<Array<Term>, Error> {
 		final offset = 0;
 		final reporter = new RuntimeReporter(pos);
 		final parser = new Parser(source, reporter, offset);

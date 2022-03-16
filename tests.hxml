@@ -6,3 +6,5 @@
 
 -D analyzer-optimize
 -D no-deprecation-warnings
+
+-lib interop

@@ -3,6 +3,24 @@ package;
 @:asserts
 class ParserTest {
 	public function new() {}
+	
+	#if interop
+	public function object() {
+		final objects = search.Parser.parse('or:foo|>bar and:<=foo,bar esc:foo\\|bar\\,baz regex:/abc\\/$/');
+		for(o in objects) {
+			#if java
+			final c = (cast o:java.lang.Object).getClass();
+			final f = c.getDeclaredFields();
+			for(f in f) trace(f);
+			#end
+			trace(o);
+		}
+		trace(haxe.Json.stringify(objects, '  '));
+		
+		return asserts.done();
+	}
+	
+	#else
 
 	public function test() {
 		search.Parser.parse('?date:2022-02-02');
@@ -48,17 +66,6 @@ class ParserTest {
 		asserts.assert(result[5].field == 'number');
 		asserts.assert(result[5].expr.match(Literal(Text('1.2'))));
 
-		return asserts.done();
-	}
-	
-	#if js
-	@:exclude
-	public function object() {
-		final objects = search.Parser.parse('or:foo|>bar and:<=foo,bar esc:foo\\|bar\\,baz regex:/abc\\/$/')
-			.map(term -> term.toObject());
-			
-		trace(haxe.Json.stringify(objects, '  '));
-		
 		return asserts.done();
 	}
 	#end

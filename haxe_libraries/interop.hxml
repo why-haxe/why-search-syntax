@@ -1,0 +1,4 @@
+# @install: lix --silent download "gh://github.com/kevinresol/interop#a64a0c1b1b4bcecb19dc23c133928cdc8b3d3fc4" into interop/0.0.0/github/a64a0c1b1b4bcecb19dc23c133928cdc8b3d3fc4
+-lib tink_typecrawler
+-cp ${HAXE_LIBCACHE}/interop/0.0.0/github/a64a0c1b1b4bcecb19dc23c133928cdc8b3d3fc4/src
+-D interop=0.0.0
