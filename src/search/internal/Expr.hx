@@ -1,4 +1,4 @@
-package search;
+package search.internal;
 
 enum Expr {
 	Binop(op:Binop, expr1:Expr, expr2:Expr);

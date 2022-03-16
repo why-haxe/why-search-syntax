@@ -1,15 +1,17 @@
 package search;
 
-#if java
-@:interop.nativize(search.interop.Term.new)
-#end
-typedef Term = {
-	public final modifiers:Array<Modifier>;
+#if (interop && java)
+class Term {
+	public final modifiers:java.util.List<search.internal.Term.Modifier>;
 	public final field:String;
-	public final expr:Expr;
+	public final expr:search.internal.Expr;
+	
+	public function new(term:search.internal.Term) {
+		modifiers = interop.Converter.nativize(term.modifiers);
+		field = interop.Converter.nativize(term.field);
+		expr = interop.Converter.nativize(term.expr);
+	}
 }
-
-enum abstract Modifier(String) to String {
-	final Optional = '?';
-	final Important = '!';
-}
+#else
+typedef Term = search.internal.Term;
+#end

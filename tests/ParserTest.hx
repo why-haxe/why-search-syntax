@@ -7,6 +7,7 @@ class ParserTest {
 	#if interop
 	public function object() {
 		final objects = search.Parser.parse('or:foo|>bar and:<=foo,bar esc:foo\\|bar\\,baz regex:/abc\\/$/');
+		$type(objects);
 		for(o in objects) {
 			#if java
 			final c = (cast o:java.lang.Object).getClass();

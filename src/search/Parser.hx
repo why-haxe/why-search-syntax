@@ -4,11 +4,17 @@ import tink.parse.Char;
 import tink.parse.Char.*;
 import tink.parse.StringSlice;
 import tink.core.Error;
-import search.Term;
-import search.Expr;
+import search.internal.Term;
+import search.internal.Expr;
 
 using StringTools;
 using tink.CoreApi;
+typedef Result = 
+	#if (interop && java)
+	java.util.List<search.Term>;
+	#else
+	Array<search.Term>;
+	#end
 
 private class RuntimeReporter implements tink.parse.Reporter.ReporterObject<Pos, Error> {
 
