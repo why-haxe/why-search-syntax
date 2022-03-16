@@ -1,19 +1,19 @@
-package search;
+package com.ty.search;
 
 import tink.parse.Char;
 import tink.parse.Char.*;
 import tink.parse.StringSlice;
 import tink.core.Error;
-import search.internal.Term;
-import search.internal.Expr;
+import com.ty.search.internal.Term;
+import com.ty.search.internal.Expr;
 
 using StringTools;
 using tink.CoreApi;
 typedef Result = 
 	#if (interop && java)
-	java.util.List<search.Term>;
+	java.util.List<com.ty.search.Term>;
 	#else
-	Array<search.Term>;
+	Array<com.ty.search.Term>;
 	#end
 
 private class RuntimeReporter implements tink.parse.Reporter.ReporterObject<Pos, Error> {

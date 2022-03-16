@@ -1,12 +1,14 @@
 package;
 
+import com.ty.search.Parser;
+
 @:asserts
 class ParserTest {
 	public function new() {}
 	
 	#if interop
 	public function object() {
-		final objects = search.Parser.parse('or:foo|>bar and:<=foo,bar esc:foo\\|bar\\,baz regex:/abc\\/$/');
+		final objects = Parser.parse('or:foo|>bar and:<=foo,bar esc:foo\\|bar\\,baz regex:/abc\\/$/');
 		$type(objects);
 		for(o in objects) {
 			#if java
@@ -24,29 +26,29 @@ class ParserTest {
 	#else
 
 	public function test() {
-		search.Parser.parse('?date:2022-02-02');
-		final result = search.Parser.parse('?date:>=2022-02-02');
+		Parser.parse('?date:2022-02-02');
+		final result = Parser.parse('?date:>=2022-02-02');
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 1);
 		asserts.assert(result[0].modifiers[0] == Optional);
 		asserts.assert(result[0].field == 'date');
 		asserts.assert(result[0].expr.match(Unop(Gte, Literal(Text('2022-02-02')))));
 
-		final result = search.Parser.parse('?date:>=2022-02-02,<=2011-01-01');
+		final result = Parser.parse('?date:>=2022-02-02,<=2011-01-01');
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 1);
 		asserts.assert(result[0].modifiers[0] == Optional);
 		asserts.assert(result[0].field == 'date');
 		asserts.assert(result[0].expr.match(Binop(And, Unop(Gte, Literal(Text('2022-02-02'))), Unop(Lte, Literal(Text('2011-01-01'))))));
 
-		final result = search.Parser.parse('?date:>=2022-02-02|2011-01-01');
+		final result = Parser.parse('?date:>=2022-02-02|2011-01-01');
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 1);
 		asserts.assert(result[0].modifiers[0] == Optional);
 		asserts.assert(result[0].field == 'date');
 		asserts.assert(result[0].expr.match(Binop(Or, Unop(Gte, Literal(Text('2022-02-02'))), Literal(Text('2011-01-01')))));
 
-		final result = search.Parser.parse('or:foo|>bar and:<=foo,bar range:1.1..2.2 esc:foo\\|bar\\.baz regex:/abc\\/$/ number:1.2');
+		final result = Parser.parse('or:foo|>bar and:<=foo,bar range:1.1..2.2 esc:foo\\|bar\\.baz regex:/abc\\/$/ number:1.2');
 		asserts.assert(result.length == 6);
 		asserts.assert(result[0].modifiers.length == 0);
 		asserts.assert(result[0].field == 'or');

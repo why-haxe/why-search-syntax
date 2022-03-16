@@ -2,7 +2,7 @@ package;
 
 import js.Browser.*;
 import js.html.*;
-import search.Parser;
+import com.ty.search.Parser;
 
 class Playground {
 	static function main() {
