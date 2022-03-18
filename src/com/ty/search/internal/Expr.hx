@@ -6,6 +6,12 @@ enum Expr {
 	Literal(value:Literal);
 }
 
+interface Visitor {
+	function binop(op:Binop, expr1:Expr, expr2:Expr):Void;
+	function unop(op:Unop, expr:Expr):Void;
+	function literal(value:Literal):Void;
+}
+
 enum abstract Unop(String) {
 	final Not = '!';
 	final Gt = '>';

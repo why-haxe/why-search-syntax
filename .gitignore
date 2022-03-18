@@ -1,3 +1,2 @@
-bin/java
-bin/node
+bin/*/
 bin/index.js

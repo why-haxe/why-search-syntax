@@ -1,0 +1,9 @@
+com.ty.search.Parser
+
+--jvm bin/interop/java/search-syntax.jar
+-dce full
+-lib search-syntax
+-lib interop
+
+-D analyzer-optimize
+-D no-deprecation-warnings
