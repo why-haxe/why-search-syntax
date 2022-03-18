@@ -1,7 +1,7 @@
-package com.ty.search.internal;
+package com.kevinresol.searchsyntax.internal;
 
 #if java
-@:interop.nativize(com.ty.search.Term.new)
+@:interop.nativize(com.kevinresol.searchsyntax.Term.new)
 #end
 typedef Term = {
 	public final modifiers:Array<Modifier>;

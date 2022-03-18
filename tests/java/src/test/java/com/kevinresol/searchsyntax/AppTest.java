@@ -1,6 +1,6 @@
-package com.ty.search;
+package tests.java.src.test.java.com.kevinresol.searchsyntax;
 
-import com.ty.search.App;
+import com.kevinresol.searchsyntax.App;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;

@@ -1,15 +1,9 @@
-package com.ty.search.internal;
+package com.kevinresol.searchsyntax.internal;
 
 enum Expr {
 	Binop(op:Binop, expr1:Expr, expr2:Expr);
 	Unop(op:Unop, expr:Expr);
 	Literal(value:Literal);
-}
-
-interface Visitor {
-	function binop(op:Binop, expr1:Expr, expr2:Expr):Void;
-	function unop(op:Unop, expr:Expr):Void;
-	function literal(value:Literal):Void;
 }
 
 enum abstract Unop(String) {
