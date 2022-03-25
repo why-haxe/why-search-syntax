@@ -1,4 +1,4 @@
-image: node:16
+image: atlassian/default-image:3
 
 definitions: 
   caches:
@@ -21,7 +21,7 @@ pipelines:
     - step: *build-test
   branches:
     master:
-      - step: *build-test
+      # - step: *build-test
       - parallel:
         - step:
             runs-on: 
@@ -51,7 +51,6 @@ pipelines:
             runs-on: 
               - self.hosted
             name: Build and Deploy Maven
-            image: maven:3.6.3-openjdk-15-slim
             caches:
               - haxe
               - maven
