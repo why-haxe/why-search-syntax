@@ -37,4 +37,29 @@ public class App
         }
         
     }
+    
+    static class Visitor {
+        public Visitor() {}
+        
+        public visitExpr(Expr expr) {
+            if(expr instanceof Expr.Literal) {
+                visitIteral((Expr.Literal) expr);
+            } else if(expr instanceof Expr.Binop) {
+                visitBinop((Expr.Binop) expr);
+            } else if(expr instanceof Expr.Unop) {
+                visitUnop((Expr.Unop) expr);
+            }
+        }
+        public visitIteral(Expr.Literal expr) {
+            
+        }
+        public visitBinop(Expr.Binop expr) {
+            
+        }
+        public visitUnop(Expr.Unop expr) {
+            
+        }
+    }
+    
 }
+

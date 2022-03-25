@@ -10,12 +10,7 @@ class Playground {
 		final output:PreElement = cast document.getElementById('output');
 		
 		input.oninput = () -> {
-			output.innerHTML = switch Parser.tryParse(input.value) {
-				case Success(terms):
-					haxe.Json.stringify(terms.map(term -> term.toObject()), '  ');
-				case Failure(e):
-					'';
-			}
+			output.innerHTML = haxe.Json.stringify(Parser.tryParse(input.value), '  ');
 		};
 	}
 }

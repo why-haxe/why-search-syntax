@@ -22,39 +22,40 @@ pipelines:
   branches:
     master:
       - step: *build-test
-      - step:
-          runs-on: 
-            - self.hosted
-          name: Build and Deploy Playground
-          caches:
-            - haxe
-          script:
-            - yarn global add lix
-            - lix download
-            - haxe playground.hxml
-            - git clone git@bitbucket.org:vantagefxcrm/vantagefxcrm.bitbucket.io.git
-            - cd vantagefxcrm.bitbucket.io
-            - ls -lah
-            - mkdir -p $BITBUCKET_REPO_SLUG
-            - cp ../bin/index.* $BITBUCKET_REPO_SLUG/
-            
-            # Ideally the following git config should point to the one who triggered this pipeline
-            # see https://jira.atlassian.com/browse/BCLOUD-16711?focusedCommentId=2327119&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-2327119
-            - git config --global user.email "kevin.leung@vantagemarkets.com"
-            - git config --global user.name "Kevin Leung"
-            
-            - git add -A
-            - git commit -m "Update search-syntax"
-            - git push origin master
-      - step:
-          runs-on: 
-            - self.hosted
-          name: Build and Deploy Maven
-          image: maven:3.6.3-openjdk-15-slim
-          caches:
-            - haxe
-            - maven
-          script:
-            - yarn global add lix
-            - lix download
-            - mvn deploy
+      - parallel:
+        - step:
+            runs-on: 
+              - self.hosted
+            name: Build and Deploy Playground
+            caches:
+              - haxe
+            script:
+              - yarn global add lix
+              - lix download
+              - haxe playground.hxml
+              - git clone git@bitbucket.org:vantagefxcrm/vantagefxcrm.bitbucket.io.git
+              - cd vantagefxcrm.bitbucket.io
+              - ls -lah
+              - mkdir -p $BITBUCKET_REPO_SLUG
+              - cp ../bin/index.* $BITBUCKET_REPO_SLUG/
+              
+              # Ideally the following git config should point to the one who triggered this pipeline
+              # see https://jira.atlassian.com/browse/BCLOUD-16711?focusedCommentId=2327119&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-2327119
+              - git config --global user.email "kevin.leung@vantagemarkets.com"
+              - git config --global user.name "Kevin Leung"
+              
+              - git add -A
+              - git commit -m "Update search-syntax"
+              - git push origin master
+        - step:
+            runs-on: 
+              - self.hosted
+            name: Build and Deploy Maven
+            image: maven:3.6.3-openjdk-15-slim
+            caches:
+              - haxe
+              - maven
+            script:
+              - yarn global add lix
+              - lix download
+              - mvn deploy
