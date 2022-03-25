@@ -63,4 +63,19 @@ pipelines:
               - yarn global add lix
               - lix download
               - apt update -qqy && apt install -qqy maven
-              - mvn deploy
+              - >-
+                cat <<EOF > ~/.m2/settings.xml
+                  <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                                              https://maven.apache.org/xsd/settings-1.0.0.xsd">
+                        <servers>
+                            <server>
+                                <id>vgp-snapshots</id>
+                                <username>$MAVEN_USERNAME</username>
+                                <password>$MAVEN_PASSWORD</password>
+                            </server>
+                        </servers>
+                  </settings>
+                EOF
+              - mvn deploy -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
