@@ -1,20 +1,18 @@
-package tests.java.src.main.java.com.ty.util.searchsyntax;
+package com.ty.util.searchsyntax;
 
 import java.util.List;
 import com.ty.util.searchsyntax.Parser;
 import com.ty.util.searchsyntax.Term;
 import com.ty.util.searchsyntax.internal.Expr;
-// import com.ty.util.searchsyntax.internal.Expr.Literal;
 
 /**
- * Hello world!
- *
+ * Dummy app to import the packaged JAR
  */
 public class App 
 {
     public static void main( String[] args )
     {
-        List<Term> terms = Parser.parse("?field:>name");
+        List<Term> terms = Parser.parse("?field:>200|<300");
         
         
         System.out.println( terms.size() );
@@ -23,41 +21,47 @@ public class App
         Expr expr = terms.get(0).expr;
         System.out.println( expr.getClass().toString() );
         
-        
-        if(expr instanceof Expr.Literal) {
-            System.out.println( "is literal" );
-        } else if(expr instanceof Expr.Binop) {
-            System.out.println( "is binop" );
-        } else if(expr instanceof Expr.Unop) {
-            Expr.Unop unop = (Expr.Unop) expr;
-            System.out.println( unop.expr );
-            System.out.println( "is unop" );
-        } else {
-            System.out.println( "unreachable" );
-        }
-        
+        final Visitor<String> visitor = new StringVisitor();
+        final String result = visitor.visitExpr(expr);
+        System.out.println(result);
     }
     
-    static class Visitor {
-        public Visitor() {}
-        
-        public visitExpr(Expr expr) {
+    static interface Visitor<Result> {
+        default Result visitExpr(Expr expr) {
             if(expr instanceof Expr.Literal) {
-                visitIteral((Expr.Literal) expr);
+                return visitLiteral((Expr.Literal) expr);
             } else if(expr instanceof Expr.Binop) {
-                visitBinop((Expr.Binop) expr);
+                return visitBinop((Expr.Binop) expr);
             } else if(expr instanceof Expr.Unop) {
-                visitUnop((Expr.Unop) expr);
+                return visitUnop((Expr.Unop) expr);
+            } else {
+                return null; // unreachable
             }
         }
-        public visitIteral(Expr.Literal expr) {
-            
+        Result visitLiteral(Expr.Literal expr);
+        Result visitBinop(Expr.Binop expr);
+        Result visitUnop(Expr.Unop expr);
+    }
+        
+        
+    static class StringVisitor implements Visitor<String> {
+        public void Visitor() {}
+        
+        public String visitLiteral(Expr.Literal expr) {
+            return expr.value.toString();
         }
-        public visitBinop(Expr.Binop expr) {
-            
+        
+        public String visitBinop(Expr.Binop expr) {
+            return 
+                visitExpr(expr.expr1) + 
+                expr.op +
+                visitExpr(expr.expr2);
         }
-        public visitUnop(Expr.Unop expr) {
-            
+        
+        public String visitUnop(Expr.Unop expr) {
+            return 
+                expr.op +
+                visitExpr(expr.expr);
         }
     }
     

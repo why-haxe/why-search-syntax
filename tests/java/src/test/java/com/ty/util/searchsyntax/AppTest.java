@@ -1,4 +1,4 @@
-package tests.java.src.test.java.com.ty.util.searchsyntax;
+package com.ty.util.searchsyntax;
 
 import com.ty.util.searchsyntax.App;
 import static org.junit.Assert.assertTrue;
