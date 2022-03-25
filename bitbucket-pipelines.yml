@@ -55,6 +55,7 @@ pipelines:
               - haxe
               - maven
             script:
+              - echo "47.75.161.8 maven.unicornfintech.com" >> /etc/hosts
               - yarn global add lix
               - lix download
               - apt update -qqy && apt install -qqy maven
