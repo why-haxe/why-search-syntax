@@ -10,9 +10,10 @@ definitions:
           - self.hosted
         name: Test
         caches:
+          - node
           - haxe
         script:
-          - yarn global add lix
+          - npm i -g lix
           - lix download
           - lix run travix node
 
@@ -28,9 +29,10 @@ pipelines:
               - self.hosted
             name: Build and Deploy Playground
             caches:
+              - node
               - haxe
             script:
-              - yarn global add lix
+              - npm i -g lix
               - lix download
               - haxe playground.hxml
               - git clone git@bitbucket.org:vantagefxcrm/vantagefxcrm.bitbucket.io.git
@@ -52,9 +54,10 @@ pipelines:
               - self.hosted
             name: Build and Deploy Maven
             caches:
+              - node
               - haxe
               - maven
             script:
-              - yarn global add lix
+              - npm i -g lix
               - lix download
               - mvn deploy
