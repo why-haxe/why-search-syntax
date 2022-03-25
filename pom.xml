@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<groupId>com.ty.util</groupId>
+	<artifactId>search-syntax</artifactId>
+	<packaging>jar</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<pluginRepositories>
+		<!-- Enabled github packages when issue resolved: https://github.community/t/download-from-github-package-registry-without-authentication/14407 -->
+		<!-- <pluginRepository>
+			<id>github-packages</id>
+			<url>https://maven.pkg.github.com/kevinresol/*</url>
+		</pluginRepository> -->
+		<pluginRepository>
+			<id>github-branch</id>
+			<url>https://raw.githubusercontent.com/kevinresol/haxe-maven-plugin/mvn-repo/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<distributionManagement>
+		<repository>
+			<id>vgp-snapshots</id>
+			<name>Private Repository</name>
+			<url>http://maven.unicornfintech.com/nexus/content/repositories/snapshots</url>
+		</repository>
+	</distributionManagement>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/java/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>com.kevinresol</groupId>
+				<artifactId>haxe-maven-plugin</artifactId>
+				<version>1.0.0</version>
+
+				<executions>
+					<execution>
+						<id>haxe-setup</id>
+						<goals>
+							<goal>setup</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>haxe-build</id>
+						<configuration>
+							<hxml>interop-java.hxml</hxml>
+						</configuration>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

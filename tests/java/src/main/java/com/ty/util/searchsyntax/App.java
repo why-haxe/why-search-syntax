@@ -1,10 +1,10 @@
-package tests.java.src.main.java.com.kevinresol.searchsyntax;
+package tests.java.src.main.java.com.ty.util.searchsyntax;
 
 import java.util.List;
-import com.kevinresol.searchsyntax.Parser;
-import com.kevinresol.searchsyntax.Term;
-import com.kevinresol.searchsyntax.internal.Expr;
-// import com.kevinresol.searchsyntax.internal.Expr.Literal;
+import com.ty.util.searchsyntax.Parser;
+import com.ty.util.searchsyntax.Term;
+import com.ty.util.searchsyntax.internal.Expr;
+// import com.ty.util.searchsyntax.internal.Expr.Literal;
 
 /**
  * Hello world!

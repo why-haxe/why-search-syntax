@@ -1,9 +1,9 @@
-com.kevinresol.searchsyntax.Parser
-
 --jvm bin/interop/java/search-syntax.jar
 -dce full
+
+com.ty.util.searchsyntax.Parser
+
 -lib search-syntax
 -lib interop
-
 -D analyzer-optimize
 -D no-deprecation-warnings

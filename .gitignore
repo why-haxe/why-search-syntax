@@ -1,2 +1,8 @@
 bin/*/
 bin/index.js
+
+/target
+
+maven.hxml
+
+.idea

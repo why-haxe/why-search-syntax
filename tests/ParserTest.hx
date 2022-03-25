@@ -1,6 +1,6 @@
 package;
 
-import com.kevinresol.searchsyntax.Parser;
+import com.ty.util.searchsyntax.Parser;
 
 @:asserts
 class ParserTest {

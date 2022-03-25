@@ -1,4 +1,4 @@
-package com.kevinresol.searchsyntax.internal;
+package com.ty.util.searchsyntax.internal;
 
 enum Expr {
 	Binop(op:Binop, expr1:Expr, expr2:Expr);
