@@ -20,7 +20,12 @@ enum abstract Binop(String) {
 	final Range = '..';
 }
 
+enum abstract Quote(String) {
+	final Double = '"';
+}
+
 enum Literal {
+	QuotedText(quote:Quote, value:String);
 	Text(value:String);
 	Regex(pattern:String);
 }

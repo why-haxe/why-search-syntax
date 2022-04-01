@@ -186,6 +186,8 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 		return
 			if(allow('/'))
 				Regex(parseRegex());
+			else if(allow('"'))
+				QuotedText(Double, parseQuotedText('"'));
 			else
 				Text(parseText());
 	}
@@ -205,8 +207,24 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 		return pattern;
 	}
 	
+	function parseQuotedText(quote:String):String {
+		var v = '';
+		
+		while(true) {
+			v += upto(quote).sure().toString();
+			
+			if(source.fastGet(pos-2) == '\\'.code)
+				v += quote;
+			else
+				break;
+		}
+		
+		return v.replace('\\$quote', quote);
+	}
+	
 	function parseText():String {
 		var v = '';
+	
 		while(true) {
 			v += readWhile(LITERAL).toString();
 			
@@ -230,6 +248,5 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 			.replace('\\,', ',')
 			.replace('\\\\', '\\');
 	}
-	
 	
 }

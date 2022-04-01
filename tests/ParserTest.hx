@@ -25,7 +25,7 @@ class ParserTest {
 	
 	#else
 
-	public function test() {
+	public function basic() {
 		Parser.parse('?date:2022-02-02');
 		final result = Parser.parse('?date:>=2022-02-02');
 		asserts.assert(result.length == 1);
@@ -47,7 +47,33 @@ class ParserTest {
 		asserts.assert(result[0].modifiers[0] == Optional);
 		asserts.assert(result[0].field == 'date');
 		asserts.assert(result[0].expr.match(Binop(Or, Unop(Gte, Literal(Text('2022-02-02'))), Literal(Text('2011-01-01')))));
+		
+		return asserts.done();
+	}
+	
+	public function range() {
+		final result = Parser.parse('range:1.1..2.2');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'range');
+		asserts.assert(result[0].expr.match(Binop(Range, Literal(Text('1.1')), Literal(Text('2.2')))));
+		
+		return asserts.done();
+	}
+	
+	public function quoted() {
+		final result = Parser.parse('quoted:"foo,bar" escaped:"foo\\"bar"');
+		asserts.assert(result.length == 2);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'quoted');
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Double, 'foo,bar'))));
+		asserts.assert(result[1].modifiers.length == 0);
+		asserts.assert(result[1].field == 'escaped');
+		asserts.assert(result[1].expr.match(Literal(QuotedText(Double, 'foo"bar'))));
+		return asserts.done();
+	}
 
+	public function complex() {
 		final result = Parser.parse('or:foo|>bar and:<=foo,bar range:1.1..2.2 esc:foo\\|bar\\.baz regex:/abc\\/$/ number:1.2');
 		asserts.assert(result.length == 6);
 		asserts.assert(result[0].modifiers.length == 0);
