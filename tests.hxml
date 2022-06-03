@@ -4,6 +4,7 @@
 
 -lib tink_unittest
 
+-D tink_parse_unicode
 -D analyzer-optimize
 -D no-deprecation-warnings
 
