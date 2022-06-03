@@ -6,3 +6,4 @@ bin/index.js
 maven.hxml
 
 .idea
+.mvn/wrapper/maven-wrapper.jar
