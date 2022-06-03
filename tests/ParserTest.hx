@@ -104,18 +104,38 @@ class ParserTest {
 		asserts.assert(result[0].modifiers.length == 0);
 		asserts.assert(result[0].field == 'name');
 		asserts.assert(result[0].expr.match(Literal(Text('名字'))));
+		
+		final result = Parser.parse('名:字');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == '名');
+		asserts.assert(result[0].expr.match(Literal(Text('字'))));
 
-		final result = Parser.parse('name:이름');
+		final result = Parser.parse('name:"이름"');
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 0);
 		asserts.assert(result[0].field == 'name');
-		asserts.assert(result[0].expr.match(Literal(Text('이름'))));
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Double, '이름'))));
 
-		final result = Parser.parse('name:имя');
+		final result = Parser.parse('name:и\\ м\\ я');
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 0);
 		asserts.assert(result[0].field == 'name');
-		asserts.assert(result[0].expr.match(Literal(Text('имя'))));
+		asserts.assert(result[0].expr.match(Literal(Text('и м я'))));
+
+		final result = Parser.parse('name:"😍 😀"');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'name');
+		asserts.assert(result[0].expr.getName() == "Literal");
+		#if jvm
+		// see https://github.com/HaxeFoundation/haxe/issues/10720
+		asserts.assert((result[0].expr.getParameters()[0]:EnumValue).getName() == "QuotedText");
+		asserts.assert((result[0].expr.getParameters()[0]:EnumValue).getParameters()[0] == '"');
+		asserts.assert((result[0].expr.getParameters()[0]:EnumValue).getParameters()[1] == '😍 😀');
+		#else
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Double, '😍 😀'))));
+		#end
 					
 		return asserts.done();
 	}
