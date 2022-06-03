@@ -9,7 +9,7 @@
 	<groupId>com.ty.util</groupId>
 	<artifactId>search-syntax</artifactId>
 	<packaging>jar</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 
 	<pluginRepositories>
 		<!-- Enabled github packages when issue resolved: https://github.community/t/download-from-github-package-registry-without-authentication/14407 -->
