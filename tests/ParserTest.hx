@@ -97,5 +97,27 @@ class ParserTest {
 
 		return asserts.done();
 	}
+
+	public function unicode() {
+		final result = Parser.parse('name:名字');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'name');
+		asserts.assert(result[0].expr.match(Literal(Text('名字'))));
+
+		final result = Parser.parse('name:이름');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'name');
+		asserts.assert(result[0].expr.match(Literal(Text('이름'))));
+
+		final result = Parser.parse('name:имя');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'name');
+		asserts.assert(result[0].expr.match(Literal(Text('имя'))));
+					
+		return asserts.done();
+	}
 	#end
 }
