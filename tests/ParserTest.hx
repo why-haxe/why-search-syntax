@@ -74,7 +74,7 @@ class ParserTest {
 	}
 
 	public function complex() {
-		final result = Parser.parse('or:foo|>bar and:<=foo,bar range:1.1..2.2 esc:foo\\|bar\\.baz regex:/abc\\/$/ number:1.2');
+		final result = Parser.parse('or:foo|>bar and:<=foo,bar range:1.1..2.2 esc:foo\\|bar\\.baz\\!baz regex:/abc\\/$/ number:1.2');
 		asserts.assert(result.length == 6);
 		asserts.assert(result[0].modifiers.length == 0);
 		asserts.assert(result[0].field == 'or');
@@ -87,7 +87,7 @@ class ParserTest {
 		asserts.assert(result[2].expr.match(Binop(Range, Literal(Text('1.1')), Literal(Text('2.2')))));
 		asserts.assert(result[3].modifiers.length == 0);
 		asserts.assert(result[3].field == 'esc');
-		asserts.assert(result[3].expr.match(Literal(Text('foo|bar.baz'))));
+		asserts.assert(result[3].expr.match(Literal(Text('foo|bar.baz!baz'))));
 		asserts.assert(result[4].modifiers.length == 0);
 		asserts.assert(result[4].field == 'regex');
 		asserts.assert(result[4].expr.match(Literal(Regex('abc\\/$'))));
