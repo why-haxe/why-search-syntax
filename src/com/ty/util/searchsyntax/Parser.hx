@@ -43,7 +43,7 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 	static final UNOP_START:Char = ['!'.code, '>'.code, '<'.code];
 	static final BINOP_START:Char = ['.'.code, '|'.code, ','.code];
 	static final ESCAPE:Char = '\\';
-	static final LITERAL_END = BINOP_START || TERM_SEP;
+	static final LITERAL_END = BINOP_START || TERM_SEP || UNOP_START;
 	static final LITERAL_ESCAPABLE = LITERAL_END || ESCAPE;
 	static final REGEX_END:Char = '/';
 	
