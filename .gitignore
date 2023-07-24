@@ -7,3 +7,5 @@ maven.hxml
 
 .idea
 .mvn/wrapper/maven-wrapper.jar
+
+node_modules

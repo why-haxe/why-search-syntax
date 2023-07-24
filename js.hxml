@@ -1,0 +1,15 @@
+--js bin/js/search-syntax.js
+-dce full
+
+why.searchsyntax.Parser
+
+
+-lib search-syntax
+# -lib genes
+# -D dts
+
+# -D tink_parse_unicode
+-D analyzer-optimize
+-D no-deprecation-warnings
+
+-D source-header=/* eslint-disable */

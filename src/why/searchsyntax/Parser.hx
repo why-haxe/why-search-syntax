@@ -1,19 +1,19 @@
-package com.ty.util.searchsyntax;
+package why.searchsyntax;
 
 import tink.parse.Char;
 import tink.parse.Char.*;
 import tink.parse.StringSlice;
 import tink.core.Error;
-import com.ty.util.searchsyntax.internal.Term;
-import com.ty.util.searchsyntax.internal.Expr;
+import why.searchsyntax.internal.Term;
+import why.searchsyntax.internal.Expr;
 
 using StringTools;
 using tink.CoreApi;
 typedef Result = 
 	#if (interop && java)
-	java.util.List<com.ty.util.searchsyntax.Term>;
+	java.util.List<why.searchsyntax.Term>;
 	#else
-	Array<com.ty.util.searchsyntax.Term>;
+	Array<why.searchsyntax.Term>;
 	#end
 
 private class RuntimeReporter implements tink.parse.Reporter.ReporterObject<Pos, Error> {
@@ -31,6 +31,7 @@ private class RuntimeReporter implements tink.parse.Reporter.ReporterObject<Pos,
   
   }
 
+#if (js) @:expose("Parser") #end
 class Parser extends tink.parse.ParserBase<Pos, Error> {
 	static final MOD:Char = ['?'.code, '!'.code];
 	static final FIELD_SEP:Char = ':';
@@ -188,6 +189,8 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 				Regex(parseRegex());
 			else if(allow('"'))
 				QuotedText(Double, parseQuotedText('"'));
+			else if(allow('`'))
+				QuotedText(Backtick, parseQuotedText('`'));
 			else
 				Text(parseText());
 	}
@@ -248,5 +251,13 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 			.replace('\\,', ',')
 			.replace('\\\\', '\\');
 	}
+	
+	#if js
+	static function __init__() {
+		Macro.exportEnum(Expr);
+		Macro.exportEnum(Literal);
+	}
+		
+	#end
 	
 }

@@ -1,0 +1,3 @@
+# @install: lix --silent download "gh://github.com/helder/set#18fe009c65d443c738c4d50cc3727139bfbfc5cb" into helder.set/0.3.1/github/18fe009c65d443c738c4d50cc3727139bfbfc5cb
+-cp ${HAXE_LIBCACHE}/helder.set/0.3.1/github/18fe009c65d443c738c4d50cc3727139bfbfc5cb/src
+-D helder.set=0.3.1

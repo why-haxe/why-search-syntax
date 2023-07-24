@@ -1,5 +1,4 @@
-package com.ty.util.searchsyntax.internal;
-
+package why.searchsyntax.internal;
 enum Expr {
 	Binop(op:Binop, expr1:Expr, expr2:Expr);
 	Unop(op:Unop, expr:Expr);
@@ -22,6 +21,7 @@ enum abstract Binop(String) {
 
 enum abstract Quote(String) {
 	final Double = '"';
+	final Backtick = '`';
 }
 
 enum Literal {

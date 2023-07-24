@@ -1,29 +1,30 @@
-package com.ty.util.searchsyntax;
+package why.searchsyntax;
 
 #if (interop && java)
 class Term {
-	public final modifiers:java.util.List<com.ty.util.searchsyntax.internal.Term.Modifier>;
+	public final modifiers:java.util.List<why.searchsyntax.internal.Term.Modifier>;
 	public final field:String;
-	public final expr:com.ty.util.searchsyntax.internal.Expr;
+	public final expr:why.searchsyntax.internal.Expr;
 	
-	public function new(term:com.ty.util.searchsyntax.internal.Term) {
+	public function new(term:why.searchsyntax.internal.Term) {
 		modifiers = interop.Converter.nativize(term.modifiers);
 		field = interop.Converter.nativize(term.field);
 		expr = interop.Converter.nativize(term.expr);
 	}
 }
 #elseif(interop && js)
+@:keep
 class Term {
-	public final modifiers:Array<com.ty.util.searchsyntax.internal.Term.Modifier>;
+	public final modifiers:Array<why.searchsyntax.internal.Term.Modifier>;
 	public final field:String;
 	public final expr:Dynamic;
 	
-	public function new(term:com.ty.util.searchsyntax.internal.Term) {
+	public function new(term:why.searchsyntax.internal.Term) {
 		modifiers = interop.Converter.nativize(term.modifiers);
 		field = interop.Converter.nativize(term.field);
 		expr = interop.Converter.nativize(term.expr);
 	}
 }
 #else
-typedef Term = com.ty.util.searchsyntax.internal.Term;
+typedef Term = why.searchsyntax.internal.Term;
 #end
