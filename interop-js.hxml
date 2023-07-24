@@ -1,0 +1,15 @@
+--js bin/interop/js/search-syntax.js
+-dce full
+-cp tests
+
+why.searchsyntax.Parser
+
+
+-lib search-syntax
+-lib interop
+# -lib genes
+# -D dts
+
+-D tink_parse_unicode
+-D analyzer-optimize
+-D no-deprecation-warnings
