@@ -3,8 +3,8 @@
 	"tasks": [
 		{
 			"type": "shell",
-			// "command": "lix run travix node",
-			"command": "lix run travix jvm",
+			"command": "lix run travix node",
+			// "command": "lix run travix jvm",
 			"problemMatcher": [
 				"$haxe-absolute",
 				"$haxe",
