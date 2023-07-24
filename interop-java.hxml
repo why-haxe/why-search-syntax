@@ -1,7 +1,7 @@
 --jvm bin/interop/java/search-syntax.jar
 -dce full
 
-com.ty.util.searchsyntax.Parser
+why.searchsyntax.Parser
 
 -lib search-syntax
 -lib interop

@@ -1,6 +1,6 @@
 package;
 
-import com.ty.util.searchsyntax.Parser;
+import why.searchsyntax.Parser;
 
 @:asserts
 class ParserTest {

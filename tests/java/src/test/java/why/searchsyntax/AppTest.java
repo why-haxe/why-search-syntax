@@ -1,6 +1,6 @@
 package com.ty.util.searchsyntax;
 
-import com.ty.util.searchsyntax.App;
+import why.searchsyntax.App;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;

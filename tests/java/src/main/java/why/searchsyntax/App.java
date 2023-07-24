@@ -1,10 +1,10 @@
 package com.ty.util.searchsyntax;
 
 import java.util.List;
-import com.ty.util.searchsyntax.Parser;
-import com.ty.util.searchsyntax.Term;
-import com.ty.util.searchsyntax.internal.Expr;
-import com.ty.util.searchsyntax.internal.Literal;
+import why.searchsyntax.Parser;
+import why.searchsyntax.Term;
+import why.searchsyntax.internal.Expr;
+import why.searchsyntax.internal.Literal;
 
 /**
  * Dummy app to import the packaged JAR

@@ -2,7 +2,7 @@ package;
 
 import js.Browser.*;
 import js.html.*;
-import com.ty.util.searchsyntax.Parser;
+import why.searchsyntax.Parser;
 
 class Playground {
 	static function main() {
