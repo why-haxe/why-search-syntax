@@ -318,6 +318,7 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 	static function __init__() {
 		Macro.exportEnum(Expr);
 		Macro.exportEnum(Literal);
+		Macro.exportEnum(TemplatePart);
 	}
 		
 	#end

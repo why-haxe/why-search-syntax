@@ -11,5 +11,3 @@ why.searchsyntax.Parser
 # -D tink_parse_unicode
 -D analyzer-optimize
 -D no-deprecation-warnings
-
--D source-header=/* eslint-disable */
