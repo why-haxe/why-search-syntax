@@ -1,6 +1,7 @@
 -cp tests
 -main RunTests
 -dce full
+-debug
 
 -lib tink_unittest
 

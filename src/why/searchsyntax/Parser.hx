@@ -48,6 +48,10 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 	static final LITERAL_ESCAPABLE = LITERAL_END || ESCAPE;
 	static final REGEX_END:Char = '/';
 	
+	static final TEMPLATE_QUOTE:Char = '`';
+	static final OPEN_BRACE:Char = '{';
+	static final CLOSE_BRACE:Char = '}';
+	
 	
 	static final REGEX = !REGEX_END;
 	static final LITERAL = !LITERAL_ESCAPABLE;
@@ -190,7 +194,7 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 			else if(allow('"'))
 				QuotedText(Double, parseQuotedText('"'));
 			else if(allow('`'))
-				QuotedText(Backtick, parseQuotedText('`'));
+				QuotedText(Backtick, parseTemplateText());
 			else
 				Text(parseText());
 	}
@@ -223,6 +227,68 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 		}
 		
 		return v.replace('\\$quote', quote);
+	}
+	
+	function parseTemplateText():String {
+		var v = '';
+		
+		while(true) {
+			v += readWhile(!(TEMPLATE_QUOTE || OPEN_BRACE)).toString();
+			trace(v);
+			final char = String.fromCharCode(source.fastGet(pos));
+			trace(char);
+
+			if(source.fastGet(pos) == '{'.code) {
+				expect('{');
+				final sub = parseSyntax(0);
+				v += '{' + sub + '}';
+			} else if(source.fastGet(pos-1) == '\\'.code) {
+				expect('`');
+				v += '`';
+			} else {
+				expect('`');
+				break;
+			}
+		}
+		
+		return v;
+	}
+	
+	function parseSyntax(openBraces:Int):String {
+		var v = '';
+		
+		final OPEN_BRACE:Char = '{';
+		final CLOSE_BRACE:Char = '}';
+		final QUOTE:Char = '`';
+		
+		while(true) {
+			
+			v += readWhile(!(OPEN_BRACE || CLOSE_BRACE || QUOTE)).toString();
+			
+			trace(v);
+			final char = String.fromCharCode(source.fastGet(pos));
+			trace(char);
+			
+			switch source.fastGet(pos) {
+				case '`'.code:
+					final c0 = String.fromCharCode(source.fastGet(pos));
+					final c1 = String.fromCharCode(source.fastGet(pos - 1));
+					trace(c1, c0);
+					expect('`');
+					if(source.fastGet(pos - 2) == '\\'.code)
+						v = '\\`'
+					else
+						v += '`' + parseTemplateText() + '`';
+				case '}'.code:
+					expect('}');
+					if(source.fastGet(pos - 2) == '\\'.code)
+						v = '}'
+					else 
+						break;
+			}
+		}
+		
+		return v;
 	}
 	
 	function parseText():String {

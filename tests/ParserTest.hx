@@ -97,6 +97,40 @@ class ParserTest {
 
 		return asserts.done();
 	}
+	
+	public function reentrancy() {
+		final result = Parser.parse('a:`some {b:0}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:0}'))));
+		
+		final result = Parser.parse('a:`some {b:`id:0`}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`id:0`}'))));
+		
+		final result = Parser.parse('a:`some {b:`id:\\``}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`id:\\``}'))));
+		
+		final result = Parser.parse('a:`some {b:`id:}`}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`id:}`}'))));
+		
+		final result = Parser.parse('a:`some {b:`every {c:0}`}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`every {c:0}`}'))));
+		
+		return asserts.done();
+	}
 
 	public function unicode() {
 		final result = Parser.parse('name:名字');
