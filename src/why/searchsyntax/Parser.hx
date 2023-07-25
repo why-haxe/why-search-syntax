@@ -40,17 +40,17 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 	static final TERM_SEP:Char = ' ';
 	
 	static final DOT:Char = '.';
+	static final OPEN_BRACE:Char = '{';
+	static final CLOSE_BRACE:Char = '}';
 	
+	static final TEMPLATE_QUOTE:Char = '`';
 	static final UNOP_START:Char = ['!'.code, '>'.code, '<'.code];
 	static final BINOP_START:Char = ['.'.code, '|'.code, ','.code];
 	static final ESCAPE:Char = '\\';
-	static final LITERAL_END = BINOP_START || TERM_SEP || UNOP_START;
+	static final LITERAL_END = BINOP_START || TERM_SEP || UNOP_START || CLOSE_BRACE;
 	static final LITERAL_ESCAPABLE = LITERAL_END || ESCAPE;
 	static final REGEX_END:Char = '/';
 	
-	static final TEMPLATE_QUOTE:Char = '`';
-	static final OPEN_BRACE:Char = '{';
-	static final CLOSE_BRACE:Char = '}';
 	
 	
 	static final REGEX = !REGEX_END;
@@ -139,7 +139,7 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 	
 	function parseExpr():Expr {
 		var e = null;
-		while(!is(TERM_SEP) && !eof()) {
+		while(!is(TERM_SEP) && !is(CLOSE_BRACE) && !eof()) {
 			e = parseExprPart(e);
 		}
 		return e;
@@ -193,8 +193,9 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 				Regex(parseRegex());
 			else if(allow('"'))
 				QuotedText(Double, parseQuotedText('"'));
-			else if(allow('`'))
-				QuotedText(Backtick, parseTemplateText());
+			else if(allow('`')) {
+				Template(parseTemplate());
+			}
 			else
 				Text(parseText());
 	}
@@ -229,29 +230,32 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 		return v.replace('\\$quote', quote);
 	}
 	
-	function parseTemplateText():String {
-		var v = '';
+	function parseTemplate():Array<TemplatePart> {
+		final parts:Array<TemplatePart> = [];
 		
+		var v = '';
+		function pushText() {
+			parts.push(Text(v));
+			v = '';
+		}
 		while(true) {
 			v += readWhile(!(TEMPLATE_QUOTE || OPEN_BRACE)).toString();
-			trace(v);
-			final char = String.fromCharCode(source.fastGet(pos));
-			trace(char);
-
 			if(source.fastGet(pos) == '{'.code) {
 				expect('{');
-				final sub = parseSyntax(0);
-				v += '{' + sub + '}';
+				pushText();
+				parts.push(Syntax(parseAll()));
+				expect('}');
 			} else if(source.fastGet(pos-1) == '\\'.code) {
 				expect('`');
-				v += '`';
+				v = v.substring(0, v.length - 1) + '`';
 			} else {
+				pushText();
 				expect('`');
 				break;
 			}
 		}
 		
-		return v;
+		return parts;
 	}
 	
 	function parseSyntax(openBraces:Int):String {
@@ -262,23 +266,15 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 		final QUOTE:Char = '`';
 		
 		while(true) {
-			
 			v += readWhile(!(OPEN_BRACE || CLOSE_BRACE || QUOTE)).toString();
-			
-			trace(v);
-			final char = String.fromCharCode(source.fastGet(pos));
-			trace(char);
 			
 			switch source.fastGet(pos) {
 				case '`'.code:
-					final c0 = String.fromCharCode(source.fastGet(pos));
-					final c1 = String.fromCharCode(source.fastGet(pos - 1));
-					trace(c1, c0);
 					expect('`');
 					if(source.fastGet(pos - 2) == '\\'.code)
 						v = '\\`'
 					else
-						v += '`' + parseTemplateText() + '`';
+						v += '`' + parseTemplate() + '`';
 				case '}'.code:
 					expect('}');
 					if(source.fastGet(pos - 2) == '\\'.code)

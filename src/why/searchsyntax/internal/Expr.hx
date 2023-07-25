@@ -27,5 +27,11 @@ enum abstract Quote(String) {
 enum Literal {
 	QuotedText(quote:Quote, value:String);
 	Text(value:String);
+	Template(parts:Array<TemplatePart>);
 	Regex(pattern:String);
+}
+
+enum TemplatePart {
+	Text(value:String);
+	Syntax(terms:Array<Term>);
 }

@@ -103,31 +103,93 @@ class ParserTest {
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 0);
 		asserts.assert(result[0].field == 'a');
-		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:0}'))));
-		
-		final result = Parser.parse('a:`some {b:`id:0`}`');
-		asserts.assert(result.length == 1);
-		asserts.assert(result[0].modifiers.length == 0);
-		asserts.assert(result[0].field == 'a');
-		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`id:0`}'))));
-		
-		final result = Parser.parse('a:`some {b:`id:\\``}`');
-		asserts.assert(result.length == 1);
-		asserts.assert(result[0].modifiers.length == 0);
-		asserts.assert(result[0].field == 'a');
-		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`id:\\``}'))));
-		
-		final result = Parser.parse('a:`some {b:`id:}`}`');
-		asserts.assert(result.length == 1);
-		asserts.assert(result[0].modifiers.length == 0);
-		asserts.assert(result[0].field == 'a');
-		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`id:}`}'))));
+		asserts.assert(result[0].expr.match(Literal(Template([
+			Text('some '),
+			Syntax([{field:'b', expr: Literal(Text('0'))}]),
+			Text(''),
+		]))));
 		
 		final result = Parser.parse('a:`some {b:`every {c:0}`}`');
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 0);
 		asserts.assert(result[0].field == 'a');
-		asserts.assert(result[0].expr.match(Literal(QuotedText(Backtick, 'some {b:`every {c:0}`}'))));
+		asserts.assert(result[0].expr.match(Literal(Template([
+			Text('some '),
+			Syntax([{field:'b', expr: Literal(Template([
+				Text('every '),
+				Syntax([{field:'c', expr: Literal(Text('0'))}]),
+				Text(''),
+			]))}]),
+			Text(''),
+		]))));
+		
+		final result = Parser.parse('a:`some {b:`like\\``}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(Template([
+			Text('some '),
+			Syntax([{field:'b', expr: Literal(Template([Text('like`')]))}]),
+			Text(''),
+		]))));
+		
+		final result = Parser.parse('a:`some {b:`every {c:`like\\``}`}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(Template([
+			Text('some '),
+			Syntax([{field:'b', expr: Literal(Template([
+				Text('every '),
+				Syntax([{field:'c', expr: Literal(Template([
+					Text('like`')
+				]))}]),
+				Text(''),
+			]))}]),
+			Text(''),
+		]))));
+		
+		final result = Parser.parse('a:`some {b:`every {c:\\}}`}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(Template([
+			Text('some '),
+			Syntax([{field:'b', expr: Literal(Template([
+				Text('every '),
+				Syntax([{field:'c', expr: Literal(Text('}'))}]),
+				Text(''),
+			]))}]),
+			Text(''),
+		]))));
+		
+		final result = Parser.parse('a:`some {b:`every {c:"}"}`}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(Template([
+			Text('some '),
+			Syntax([{field:'b', expr: Literal(Template([
+				Text('every '),
+				Syntax([{field:'c', expr: Literal(QuotedText(Double, '}'))}]),
+				Text(''),
+			]))}]),
+			Text(''),
+		]))));
+		
+		final result = Parser.parse('a:`some {b:`every {c:"`"}`}`');
+		asserts.assert(result.length == 1);
+		asserts.assert(result[0].modifiers.length == 0);
+		asserts.assert(result[0].field == 'a');
+		asserts.assert(result[0].expr.match(Literal(Template([
+			Text('some '),
+			Syntax([{field:'b', expr: Literal(Template([
+				Text('every '),
+				Syntax([{field:'c', expr: Literal(QuotedText(Double, '`'))}]),
+				Text(''),
+			]))}]),
+			Text(''),
+		]))));
 		
 		return asserts.done();
 	}
