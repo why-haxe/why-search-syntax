@@ -1,11 +1,14 @@
 {
   "name": "why-search-syntax",
-  "version": "0.0.1",
+  "homepage": "https://github.com/why-haxe/why-search-syntax",
+  "version": "0.1.2",
   "author": "kevinresol",
   "main": "bin/js-out/index.js",
   "files": [
-    "bin/js-out"
+    "bin/js-out",
+    "search-syntax.d.ts"
   ],
+  "types": "search-syntax.d.ts",
   "scripts": {
     "prepublish": "haxe js.hxml && yarn babel bin/js --out-dir bin/js-out"
   },
