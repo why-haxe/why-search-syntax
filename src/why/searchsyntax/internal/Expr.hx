@@ -1,4 +1,6 @@
 package why.searchsyntax.internal;
+
+@:expose('Expr')
 enum Expr {
 	Binop(op:Binop, expr1:Expr, expr2:Expr);
 	Unop(op:Unop, expr:Expr);
@@ -21,9 +23,10 @@ enum abstract Binop(String) {
 
 enum abstract Quote(String) {
 	final Double = '"';
-	final Backtick = '`';
 }
 
+
+@:expose('Literal')
 enum Literal {
 	QuotedText(quote:Quote, value:String);
 	Text(value:String);
@@ -31,6 +34,8 @@ enum Literal {
 	Template(parts:Array<TemplatePart>);
 }
 
+
+@:expose('TemplatePart')
 enum TemplatePart {
 	Text(value:String);
 	Syntax(terms:Array<Term>);

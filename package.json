@@ -1,0 +1,18 @@
+{
+  "name": "why-search-syntax",
+  "version": "0.0.1",
+  "author": "kevinresol",
+  "main": "bin/js-out/index.js",
+  "files": [
+    "bin/js-out"
+  ],
+  "scripts": {
+    "prepublish": "haxe js.hxml && yarn babel bin/js --out-dir bin/js-out"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "lix": "^15.12.0"
+  }
+}

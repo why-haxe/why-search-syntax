@@ -314,7 +314,7 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 			.replace('\\\\', '\\');
 	}
 	
-	#if js
+	#if (js && !genes)
 	static function __init__() {
 		Macro.exportEnum(Expr);
 		Macro.exportEnum(Literal);
