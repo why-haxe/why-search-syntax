@@ -77,7 +77,10 @@ class Parser extends tink.parse.ParserBase<Pos, Error> {
 		#end
 	}
 	
-	static function doParse(source, ?pos):Outcome<Array<Term>, Error> {
+	static function doParse(source:String, ?pos):Outcome<Array<Term>, Error> {
+		if(source.trim().length == 0)
+			return Success([]);
+		
 		final offset = 0;
 		final reporter = new RuntimeReporter(pos);
 		final parser = new Parser(source, reporter, offset);

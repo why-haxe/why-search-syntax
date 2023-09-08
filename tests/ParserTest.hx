@@ -25,8 +25,13 @@ class ParserTest {
 	
 	#else
 
+	public function empty() {
+		final result = Parser.parse('');
+		asserts.assert(result.length == 0);
+		return asserts.done();
+	}
+	
 	public function basic() {
-		Parser.parse('?date:2022-02-02');
 		final result = Parser.parse('?date:>=2022-02-02');
 		asserts.assert(result.length == 1);
 		asserts.assert(result[0].modifiers.length == 1);
